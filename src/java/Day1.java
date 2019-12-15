@@ -1,4 +1,4 @@
-package com.company;
+package java;
 
 public class Day1 {
 }
