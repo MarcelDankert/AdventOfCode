@@ -1,5 +1,8 @@
 package pack;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 public class Day1 {
     private final int[] arr = {62371, 94458, 78824, 57296, 84226, 133256, 101771, 61857, 120186, 132234, 50964, 97800, 81275,
             109561, 145666, 134029, 81625, 61963, 83820, 104210, 62264, 146376, 91889, 116069, 54596, 132877, 70341, 89983, 84627,
@@ -9,11 +12,8 @@ public class Day1 {
             71029, 73865, 142021, 140326, 77894, 61245, 96492, 136329, 132967, 83975, 53082, 56784, 50024, 131154, 138517, 130787,
             103334, 104287, 140644, 148945, 58945, 62153, 93488};
     public int getFuelFirst(){
-        int sum = 0;
-        for (Integer i:arr) {
-            sum += Math.floor(i/3)-2;
-        }
-        return sum;
+        IntStream stream = Arrays.stream(arr);
+        return stream.map(number -> (int) (Math.floor(number / 3) - 2)).sum();
     }
     public int getFuelSecond(){
         int sum = 0;
