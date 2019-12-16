@@ -1,5 +1,6 @@
 package pack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Day3 {
@@ -34,32 +35,67 @@ public class Day3 {
                     "R498,D853,R918,U565,R65,U32,L607,U552,L38,D822,L77,U490,L190,D93,L104,U268,R702,D112,L917,D876,L631,D139,L989," +
                     "U810,R329,U253,L498,D767,L550,U666,L549,U616,R376";
     private String[] wireOne, wireTwo;
-    private int maxL, maxR, maxU, maxD, pos;
-    private int[][] frontPanel;
+    ArrayList<ArrayList<String>> array;
 
     public Day3() {
         wireOne = first.split(",");
         wireTwo = sec.split(",");
-        setSize(wireOne);
-        setSize(wireTwo);
+        array = new ArrayList<>();
+
     }
 
-    public void setSize(String[] array) {
+    private void setWire(String[] path) {
+        int x = 0, y = 0;
+
+        for (String str : path) {
+            String s = str.substring(0, 1);
+            int steps =  Integer.parseInt(str.substring(1));
+            switch (s) {
+                case "L":
+                    for (int i = steps; i > steps; i--) {
+                        //array.get(y).get(x+i).add("-");
+                    }
+                    x -= steps;
+                    break;
+                case "R":
+                    for (int i = 0; i < steps; i++) {
+                        array.get(y).add("-");
+                    }
+                    x += steps;
+                    break;
+                case "U":
+                    for (int i = 0; i < steps; i++) {
+                        array.get(y).add("-");
+                    }
+                    y += steps;
+                    break;
+                default:
+                    for (int i = 0; i < steps; i++) {
+                        array.get(y).add("-");
+                    }
+                    y += steps;
+            }
+        }
+    }
+
+    private int[] setSize(String[] array) {
+        int[] result = new int[4];
         for (String str : array) {
             String s = str.substring(0, 1);
             switch (s) {
                 case "L":
-                    maxL += Integer.parseInt(str.substring(1));
+                    result[0] += Integer.parseInt(str.substring(1));
                     break;
                 case "R":
-                    maxR += Integer.parseInt(str.substring(1));
+                    result[1] += Integer.parseInt(str.substring(1));
                     break;
                 case "U":
-                    maxU += Integer.parseInt(str.substring(1));
+                    result[2] += Integer.parseInt(str.substring(1));
                     break;
                 default:
-                    maxD += Integer.parseInt(str.substring(1));
+                    result[3] += Integer.parseInt(str.substring(1));
             }
         }
+        return result;
     }
 }
