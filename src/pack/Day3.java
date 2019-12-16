@@ -1,7 +1,11 @@
 package pack;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class Day3 {
     private final String first =
@@ -34,68 +38,62 @@ public class Day3 {
                     "L857,U474,R145,U188,L789,U698,R735,U131,L494,U162,L27,D849,L140,D849,R615,U798,R160,U492,R884,U521,L542,D729," +
                     "R498,D853,R918,U565,R65,U32,L607,U552,L38,D822,L77,U490,L190,D93,L104,U268,R702,D112,L917,D876,L631,D139,L989," +
                     "U810,R329,U253,L498,D767,L550,U666,L549,U616,R376";
-    private String[] wireOne, wireTwo;
-    ArrayList<ArrayList<String>> array;
+    private String[] firstTrack, secondTrack;
+    private ArrayList<Integer> distance;
 
     public Day3() {
-        wireOne = first.split(",");
-        wireTwo = sec.split(",");
-        array = new ArrayList<>();
-
+        firstTrack = first.split(",");
+        secondTrack = sec.split(",");
     }
 
-    private void setWire(String[] path) {
+    private ArrayList<Integer> getMatches(){
+        ArrayList<Point> wireOne = new ArrayList<>();
+        ArrayList<Point> wireTwo = new ArrayList<>();
+        ArrayList<Integer> distance = new ArrayList<>();
+        setWire(firstTrack, wireOne);
+        setWire(secondTrack, wireTwo);
+        for (Point point:wireOne) {
+            if (wireTwo.contains(point)){
+                distance.add((int)(Math.abs(point.getX()) + Math.abs(point.getY())));
+            }
+        }
+        return distance;
+    }
+
+    public int getClosestPoint(){
+        return Collections.min(getMatches());
+    }
+
+    private void setWire(String[] path, ArrayList<Point> points) {
         int x = 0, y = 0;
-
         for (String str : path) {
-            String s = str.substring(0, 1);
-            int steps =  Integer.parseInt(str.substring(1));
-            switch (s) {
+            String direction = str.substring(0, 1);
+            int range =  Integer.parseInt(str.substring(1));
+            switch (direction) {
                 case "L":
-                    for (int i = steps; i > steps; i--) {
-                        //array.get(y).get(x+i).add("-");
+                    for (int i = range; i > range; i--) {
+                        points.add(new Point(x-i, y));
                     }
-                    x -= steps;
+                    x -= range;
                     break;
                 case "R":
-                    for (int i = 0; i < steps; i++) {
-                        array.get(y).add("-");
+                    for (int i = 0; i < range; i++) {
+                        points.add(new Point(x+i, y));
                     }
-                    x += steps;
+                    x += range;
                     break;
                 case "U":
-                    for (int i = 0; i < steps; i++) {
-                        array.get(y).add("-");
+                    for (int i = 0; i < range; i++) {
+                        points.add(new Point(x, y+i));
                     }
-                    y += steps;
+                    y += range;
                     break;
                 default:
-                    for (int i = 0; i < steps; i++) {
-                        array.get(y).add("-");
+                    for (int i = 0; i < range; i++) {
+                        points.add(new Point(x, y-i));
                     }
-                    y += steps;
+                    y -= range;
             }
         }
-    }
-
-    private int[] setSize(String[] array) {
-        int[] result = new int[4];
-        for (String str : array) {
-            String s = str.substring(0, 1);
-            switch (s) {
-                case "L":
-                    result[0] += Integer.parseInt(str.substring(1));
-                    break;
-                case "R":
-                    result[1] += Integer.parseInt(str.substring(1));
-                    break;
-                case "U":
-                    result[2] += Integer.parseInt(str.substring(1));
-                    break;
-                default:
-                    result[3] += Integer.parseInt(str.substring(1));
-            }
-        }
-        return result;
     }
 }
